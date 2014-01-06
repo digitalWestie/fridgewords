@@ -101,7 +101,7 @@ void drawCharacter(byte character[], int shift){
       if (strip_i + shift > 4) { break; }// all drawn
       if (strip_i + shift < 0) { break; } //not there yet
       if (character[i] & mask){
-        strips[(strip_i + shift)].setPixelColor(pixel_i, 255, 255, 255);
+        strips[(strip_i + shift)].setPixelColor(pixel_i, 100, 100, 100);
       }
       pixel_i++;
       if (pixel_i > 4) { break; } //out of pixels
@@ -210,6 +210,7 @@ void readPage(){   //read the page, and capture & return everything between '<' 
           message.trim();
           Serial.print("Message set to ");
           Serial.println(message);
+          resetScroller();
           return;
         }
       }
@@ -242,4 +243,3 @@ void printEncryptionType(int thisType) {
     break;
   } 
 }
-

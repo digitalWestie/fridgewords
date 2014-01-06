@@ -39,7 +39,7 @@ byte capitals[26][6] = {
   {4, 0, 17, 10, 31, 0}, //K
   {4, 0, 1, 1, 31, 0},   //L
   {5, 15, 16, 14, 16, 15}, //M
-  {4, 0, 31, 16, 15, 0},  //N
+  {4, 0, 15, 16, 31, 0},  //N
   {4, 0, 15, 17, 15, 0}, //O
   {4, 0, 8, 20, 31, 0},  //P
   {5, 1, 14, 17, 17, 14},//Q
@@ -54,6 +54,8 @@ byte capitals[26][6] = {
   {4, 0, 25, 21, 19, 0}  //Z
 };
 
+byte onchar[] = {4, 0, 4, 14, 4, 0};
+
 int draw_count = 0;
 int character_ints[3] = {0};
 int scroll_shifts[3] = {-4};
@@ -62,8 +64,8 @@ IPAddress ip(192, 168, 0, 17);
 IPAddress dns(192, 168, 0, 1);
 IPAddress gateway(192, 168, 0, 1);
 
-char ssid[] = "";     //  your network SSID (name) 
-char pass[] = "";    // your network password
+char ssid[] = "SKY0C026";     //  your network SSID (name) 
+char pass[] = "FDBUTCRX";    // your network password
 
 //char ssid[] = "HTC Portable Hotspot";     //  your network SSID (name) 
 //char pass[] = "helsingen";    // your network password
@@ -76,7 +78,7 @@ boolean has_connected = false;
 char inString[32]; // string for incoming serial data
 int stringPos = 0; // string index counter
 boolean startRead = false; // is reading?
-String message = "\"HELLO YOU!\"";
+String message = "\"CANT CONNECT\"";
 boolean messageSet = false; //do we have a message?
 byte messageSetRetries = 6; //retry getting message
 byte next_char = 0;
@@ -86,6 +88,17 @@ void setup() {
   printMacAddress();
   // attempt to connect to Wifi network:
   //WiFi.config(ip, dns, gateway);
+  
+  //Init neo-pixels
+  for(uint16_t i=0; i < 5; i++) {
+    strips[i].begin();
+    strips[i].show();// Initialize all pixels to 'off'
+  }
+  
+  //Draw a '+' to show we are on
+  drawCharacter(onchar, 0);
+  showStrips();
+  
   while(status != WL_CONNECTED){ 
     listNetworks();
     Serial.print("Attempting to connect to SSID: ");
@@ -98,22 +111,18 @@ void setup() {
     delay(10000);
   }
   
-  //Init neo-pixels
-  for(uint16_t i=0; i < 5; i++) {
-    strips[i].begin();
-    strips[i].show();// Initialize all pixels to 'off'
-  }
+  stripsOff();
   resetScroller();
 }
 
 void loop(){
   if (!messageSet && messageSetRetries > 0){
-    if(client.connected()){ readPage(); } 
+    if(client.connected()){ readPage(); }
     else { serverConnect(); }
   } else {
     stripsOff();
-    scroll();  
+    scroll();
     showStrips();
-  } 
+  }
   delay(600);
 }
