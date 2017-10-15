@@ -64,8 +64,8 @@ IPAddress ip(192, 168, 0, 17);
 IPAddress dns(192, 168, 0, 1);
 IPAddress gateway(192, 168, 0, 1);
 
-char ssid[] = "SKY0C026";     //  your network SSID (name) 
-char pass[] = "FDBUTCRX";    // your network password
+char ssid[] = "abc";     //  your network SSID (name) 
+char pass[] = "abc";    // your network password
 
 //char ssid[] = "HTC Portable Hotspot";     //  your network SSID (name) 
 //char pass[] = "helsingen";    // your network password
